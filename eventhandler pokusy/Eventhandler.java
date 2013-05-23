@@ -2,8 +2,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
+import java.util.ArrayList;
 
 public class Eventhandler implements KeyListener, MouseInputListener {
+	
 	public Eventhandler (Hlavni game){
 		game.addKeyListener(this);
 		game.addMouseListener(this);
@@ -20,13 +22,6 @@ public class Eventhandler implements KeyListener, MouseInputListener {
 	
 	public void keyReleased(KeyEvent e){
 		System.out.println("Key released: "+e.getKeyCode());
-	}
-	
-	public void mouseReport(MouseEvent e,String state){
-		System.out.println("Button "+state+": "+e.getButton());
-		System.out.println("Number of clicks: "+e.getClickCount());
-		System.out.println("X coordinate: "+e.getX());
-		System.out.println("Y coordinate: "+e.getY());
 	}
 	
 	public void mouseClicked(MouseEvent e){
@@ -55,5 +50,12 @@ public class Eventhandler implements KeyListener, MouseInputListener {
 	
 	public void mouseExited(MouseEvent e){
 		return;
+	}
+	
+	public void mouseReport(MouseEvent e,String state){
+		System.out.println("Button "+state+": "+e.getButton());
+		System.out.println("Number of clicks: "+e.getClickCount());
+		System.out.println("X coordinate: "+e.getX());
+		System.out.println("Y coordinate: "+e.getY());
 	}
 }
