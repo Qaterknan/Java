@@ -1,7 +1,7 @@
 from math import sqrt
 
 primes = [2]
-maxPrime = 100000
+maxPrime = 400000
 
 is_prime = True
 i = 3

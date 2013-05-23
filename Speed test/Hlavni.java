@@ -1,22 +1,30 @@
-import java.util.Date;
+// import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 class Hlavni {
 	public static void main(String args[]){
-		long startCas = new Date().getTime();
-		boolean jePrvocislo = false;
-		for(int i = 0;i < 10;i++){
+		boolean jePrvocislo = true;
+		int maxPrvo = 400000;
+		List<Integer> prvocisla = new ArrayList<Integer>();
+		prvocisla.add(2);
+
+		for(int i = 3; i < maxPrvo; i+=2){
 			jePrvocislo = true;
-			for(int j = i-1;j > 1;j--){
-				if(i%j == 0){
+			double sq = Math.sqrt(i);
+			for(int p: prvocisla){
+				// System.out.println(p);
+				if(p > sq){
+					break;
+				}
+				if(i%p == 0){
 					jePrvocislo = false;
 				}
 			}
 			if(jePrvocislo){
-				System.out.println(i);
+				prvocisla.add(i);
 			}
 		}
-		long endCas = new Date().getTime();
-		System.out.println("Cas vypoctu: ");
-		System.out.println(endCas-startCas);
+		System.out.println(prvocisla);
 	}
 }
