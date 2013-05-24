@@ -14,5 +14,10 @@ public class Hlavni extends JFrame  {
 	
 	public static void main (String args[]){
 		new Hlavni();
+		eventhandler.keyboardControls.add(new KeyboardControl(83){
+			public void down (){
+				System.out.println("First action initiated by evenhandler!");
+			}
+		});
 	}
 }

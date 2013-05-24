@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class Eventhandler implements KeyListener, MouseInputListener {
 	
+	public ArrayList keyboardControls = new ArrayList();
+	
 	public Eventhandler (Hlavni game){
 		game.addKeyListener(this);
 		game.addMouseListener(this);
@@ -57,5 +59,15 @@ public class Eventhandler implements KeyListener, MouseInputListener {
 		System.out.println("Number of clicks: "+e.getClickCount());
 		System.out.println("X coordinate: "+e.getX());
 		System.out.println("Y coordinate: "+e.getY());
+	}
+	
+	public void mouseHandle(MouseEvent e,String id){
+		for(KeyboardControl kc : keyboardControls){
+			if(id == "down"){
+				if(e.getKeyCode() == kc.id){
+					kc.down();
+				}
+			}
+		}
 	}
 }
