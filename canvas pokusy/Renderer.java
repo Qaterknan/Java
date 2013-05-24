@@ -3,10 +3,15 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.util.Date;
 
+import java.io.FileInputStream;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
 public class Renderer extends Canvas implements Runnable {
-	
-	public Renderer(){
+	public BufferedImage image;
+	public Renderer() throws Exception {
 		super();
+		image = ImageIO.read(new FileInputStream("cathedral.png"));
 	}
 	
 	float poziceKruhu = 250;
@@ -21,11 +26,13 @@ public class Renderer extends Canvas implements Runnable {
 		
 		context.setColor(Color.BLUE);
 		context.fillOval(Math.round(poziceKruhu),50,50,50);
+		
+		context.drawImage(image, 300,300,this);
 	}
 	
 	boolean running = false;
 	long minulyRender = new Date().getTime();
-	long limit = 15;
+	long limit = 20;
 	public void run(){
 		running = true;
 		while(running){

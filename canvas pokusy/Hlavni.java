@@ -9,7 +9,7 @@ public class Hlavni extends JFrame {
 	
 	Renderer canvas = new Renderer();
 	
-	public Hlavni(String title){
+	public Hlavni(String title) throws Exception {
 		super(title);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize((int) screen.getWidth(),(int) screen.getHeight());
@@ -23,7 +23,7 @@ public class Hlavni extends JFrame {
 		canvas.run();
 	}
 	
-	public static void main(String args[]){
+	public static void main(String args[]) throws Exception {
 		new Hlavni("Okno s canvasem");
 	}
 }
