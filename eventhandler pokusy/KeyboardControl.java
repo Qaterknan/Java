@@ -4,7 +4,7 @@ public class KeyboardControl {
 		this.id = id;
 	}
 	
-	public void down ();
-	public void up ();
-	public void continuous ();
+	public void down (){};
+	public void up (){};
+	public void continuous (){};
 }
