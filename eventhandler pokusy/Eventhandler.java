@@ -15,7 +15,7 @@ public class Eventhandler implements KeyListener, MouseInputListener {
 	}
 	
 	public void keyTyped(KeyEvent e){
-		//~ System.out.println("Key typed: "+e.getKeyChar());
+		keyHandle(e, "down");
 	}
 	
 	public void keyPressed(KeyEvent e){
@@ -64,8 +64,15 @@ public class Eventhandler implements KeyListener, MouseInputListener {
 	public void keyHandle(KeyEvent e,String id){
 		for(KeyboardControl kc : keyboardControls){
 			if(id == "down"){
-				if(e.getKeyCode() == kc.id){
-					kc.down();
+				if(kc.id instanceof String){
+					if(e.getKeyChar() == kc.id){
+						kc.down();
+					}
+				}
+				else{
+					if(e.getKeyCode() == kc.id){
+						kc.down();
+					}
 				}
 			}
 		}
