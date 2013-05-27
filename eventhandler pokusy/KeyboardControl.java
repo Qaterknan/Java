@@ -3,7 +3,6 @@ public class KeyboardControl {
 	public KeyboardControl (int id){
 		this.id = id;
 	}
-	
 	public void down (){};
 	public void up (){};
 	public void continuous (){};
