@@ -32,7 +32,7 @@ public class Renderer extends Canvas implements Runnable {
 	
 	boolean running = false;
 	long minulyRender = new Date().getTime();
-	long limit = 20;
+	long limit = 100;
 	public void run(){
 		running = true;
 		while(running){
