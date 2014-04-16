@@ -22,7 +22,7 @@ public class Renderer extends Canvas {
 		save();
 		context.translate(object.position.x,object.position.y);
 		object.render(context);
-		object.renderChildren(context);
+		object.renderChildren(this);
 		restore();
 	}
 	

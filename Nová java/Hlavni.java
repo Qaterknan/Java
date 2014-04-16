@@ -1,6 +1,10 @@
 import java.awt.Color;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 public class Hlavni implements Runnable{
 	
@@ -14,6 +18,23 @@ public class Hlavni implements Runnable{
 		renderer = new Renderer();
 		okno.add(renderer);
 		renderer.init();
+		try {
+			File file = new File("cathedral.png");
+			try {
+				Image img = ImageIO.read(file);
+				children.add(new Obdelnik(
+						new Vector2(270,220),
+						new Vector2(128,128),
+						img
+				));
+			}
+			catch (IOException ex){
+				System.out.println(ex.getCause());
+			}
+		}
+		catch (NullPointerException ex){
+			System.out.println("Wrong URL");
+		}
 		
 		children.add(new Obdelnik(
 			new Vector2(100,100),
