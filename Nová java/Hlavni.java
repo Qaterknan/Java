@@ -7,16 +7,18 @@ public class Hlavni implements Runnable{
 	
 	public ArrayList<GameObject> children = new ArrayList<GameObject>();
 	Renderer renderer;
+	Loader loader;
 	
 	public Hlavni(){
 		
 		Window okno = new Window("Nastavitelné okno",new Vector2(50,50),new Vector2(500,500));
 		
-		Loader loader = new Loader();
+		loader = new Loader();
 		
 		renderer = new Renderer();
 		okno.add(renderer);
 		renderer.init();
+		renderer.setSize(500,500);
 		
 		GeneralPath s = new GeneralPath();
 		s.moveTo(-50,-50);
@@ -29,22 +31,24 @@ public class Hlavni implements Runnable{
 		GameObject obd = new GameObject(new Vector2(100,100), texture);
 		children.add(obd);
 		
-		loader.imageNames = new String[2][2];
-		loader.imageNames[0][0] = "cathedral.png";
-		loader.imageNames[0][1] = "cathedral";
-		loader.imageNames[1][0] = "toyota.png";
-		loader.imageNames[1][1] = "toyota";
-		loader.loadImage(0);
-		loader.loadImage(1);
+		loader.imageNamesToLoad = new String[3][2];
+		loader.imageNamesToLoad[0][0] = "cathedral.png";
+		loader.imageNamesToLoad[0][1] = "cathedral";
+		loader.imageNamesToLoad[1][0] = "toyota.png";
+		loader.imageNamesToLoad[1][1] = "toyota";
+		loader.imageNamesToLoad[2][0] = "toyota.png";
+		loader.imageNamesToLoad[2][1] = "auto";
+		/*loader.loadImage(0);
+		loader.loadImage(1);*/
 		
-		loader.soundNames = new String[2][2];
-		loader.soundNames[0][0] = "boj.wav";
-		loader.soundNames[0][1] = "fight";
-		loader.soundNames[1][0] = "valka2.wav";
-		loader.soundNames[1][1] = "war";
-		loader.loadSound(0);
-		loader.loadSound(1);
-		
+		loader.soundNamesToLoad = new String[2][2];
+		loader.soundNamesToLoad[0][0] = "boj.wav";
+		loader.soundNamesToLoad[0][1] = "fight";
+		loader.soundNamesToLoad[1][0] = "valka2.wav";
+		loader.soundNamesToLoad[1][1] = "war";
+		/*loader.loadSound(0);
+		loader.loadSound(1);*/
+		loader.loadAssets();
 		ImageTexture texture2 = new ImageTexture(loader.imageStorage.get("cathedral"),new Vector2(150,150), new Vector2(1,1));
 		children.add(new GameObject(new Vector2(75,226), texture2));
 		texture2.toggleDevMode();
@@ -67,14 +71,13 @@ public class Hlavni implements Runnable{
 		children.add(new GameObject(new Vector2(200,200),texture3));
 		
 		FilmstripAnimatedTexture texture4 = new FilmstripAnimatedTexture(
-				loader.imageStorage.get("toyota"),
+				loader.imageStorage.get("auto"),
 				new Vector2(6,1),
 				1000,
 				new Vector2(150,150),
 				new Vector2(1,1)
 			);
 		children.add(new GameObject(new Vector2(300,300), texture4));
-		
 		loader.soundStorage.get("war").start();
 		
 		run();

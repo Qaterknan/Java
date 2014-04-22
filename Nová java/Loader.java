@@ -1,6 +1,7 @@
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -12,10 +13,14 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Loader {
 	
-	public String[][] imageNames;
-	public String[][] soundNames;
+	public ArrayList<String[]> imageNames = new ArrayList<String[]>();
+	public ArrayList<String[]> soundNames = new ArrayList<String[]>();
+	public String[][] imageNamesToLoad;
+	public String[][] soundNamesToLoad;
 	public HashMap<String, Image> imageStorage = new HashMap<String, Image>();
 	public HashMap<String, Clip> soundStorage = new HashMap<String, Clip>();
+	
+	public float progress = 0;
 	
 	public Loader(){
 		
@@ -28,10 +33,21 @@ public class Loader {
 	
 	public boolean loadImage(int i){
 		try{
-			File file = new File(imageNames[i][0]);
-			Image img = ImageIO.read(file);
-			imageStorage.put(imageNames[i][1], img);
-			return true;
+			String key = imageAlreadyLoaded(imageNamesToLoad[i][0]);
+			if(key == "NOT"){
+				File file = new File(imageNamesToLoad[i][0]);
+				Image img = ImageIO.read(file);
+				imageStorage.put(imageNamesToLoad[i][1], img);
+				String[] imageIDs = new String[2];
+				imageIDs[0] = imageNamesToLoad[i][0];
+				imageIDs[1] = imageNamesToLoad[i][1];
+				imageNames.add(imageIDs);
+				return true;
+			}
+			else{
+				imageStorage.put(imageNamesToLoad[i][1], imageStorage.get(key));
+				return true;
+			}
 		}
 		catch(NullPointerException ex){
 			return systemMessage(ex);
@@ -43,11 +59,22 @@ public class Loader {
 	
 	public boolean loadSound(int i){
 		try{
-			File file = new File(soundNames[i][0]);
-			Clip clip = AudioSystem.getClip();
-			clip.open(AudioSystem.getAudioInputStream(file));
-			soundStorage.put(soundNames[i][1], clip);
-			return true;
+			String key = soundAlreadyLoaded(soundNamesToLoad[i][0]);
+			if(key == "NOT"){
+				File file = new File(soundNamesToLoad[i][0]);
+				Clip clip = AudioSystem.getClip();
+				clip.open(AudioSystem.getAudioInputStream(file));
+				soundStorage.put(soundNamesToLoad[i][1], clip);
+				String[] soundIDs = new String[2];
+				soundIDs[0] = soundNamesToLoad[i][0];
+				soundIDs[1] = soundNamesToLoad[i][1];
+				soundNames.add(soundIDs);
+				return true;
+			}
+			else {
+				soundStorage.put(soundNamesToLoad[i][0], soundStorage.get(key));
+				return true;
+			}
 		}
 		catch(NullPointerException ex){
 			return systemMessage(ex);
@@ -61,5 +88,49 @@ public class Loader {
 		catch(UnsupportedAudioFileException ex){
 			return systemMessage(ex);
 		}
+	}
+	
+	public boolean loadAssets(){
+		long overallSize = 0;
+		long sizeLoaded = 0;
+		long[] imageSizes = new long[imageNamesToLoad.length];
+		long[] soundSizes = new long[soundNamesToLoad.length];
+		for(int i = 0; i < imageNamesToLoad.length; i++){
+			imageSizes[i] = new File(imageNamesToLoad[i][0]).length();
+			overallSize += imageSizes[i];
+		};
+		for(int i = 0; i < soundNamesToLoad.length; i++){
+			soundSizes[i] = new File(soundNamesToLoad[i][0]).length();
+			overallSize += soundSizes[i];
+		};
+		for(int i = 0; i < imageNamesToLoad.length; i++){
+			loadImage(i);
+			sizeLoaded += imageSizes[i];
+			progress = (float) sizeLoaded/overallSize;
+		};
+		for(int i = 0; i < soundNamesToLoad.length; i++){
+			loadSound(i);
+			sizeLoaded += soundSizes[i];
+			progress = (float) sizeLoaded/overallSize;
+		};
+		return true;
+	}
+	
+	public String imageAlreadyLoaded(String src){
+		for(String[] imageIDs : imageNames){
+			if(imageIDs[0] == src){
+				return imageIDs[1];
+			}
+		};
+		return "NOT";
+	};
+	
+	public String soundAlreadyLoaded(String src){
+		for(String[] soundIDs : soundNames){
+			if(soundIDs[0] == src){
+				return soundIDs[1];
+			}
+		};
+		return "NOT";
 	}
 }
