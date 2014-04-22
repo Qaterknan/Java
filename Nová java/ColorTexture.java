@@ -3,7 +3,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 
 
-public class ColorTexture implements Texture{
+public class ColorTexture extends Texture{
 	
 	public Color color = new Color(0,255,0);
 	public String renderType = "fill";
@@ -12,6 +12,7 @@ public class ColorTexture implements Texture{
 	
 	public void renderTexture(GraphicsContext ctx){
 		ctx.save();
+		textureTransform(ctx);
 		Graphics2D g = ctx.graphics;
 		g.setPaint(color);
 		if(renderType == "fill")
@@ -24,6 +25,7 @@ public class ColorTexture implements Texture{
 	}
 	
 	public ColorTexture (int r, int g, int b, double alfa, String type, Shape s){
+		super(new Vector2(0,0), new Vector2(1,1),0);
 		alpha = (float) alfa;
 		color = new Color(r,g,b,Math.round(alpha*255));
 		renderType = type;
@@ -31,6 +33,7 @@ public class ColorTexture implements Texture{
 	}
 	
 	public ColorTexture(int r, int g, int b, double alfa, Shape s){
+		super(new Vector2(0,0), new Vector2(1,1), 0);
 		alpha = (float) alfa;
 		color = new Color(r,g,b,Math.round(alpha*255));
 		renderType = "fill";
@@ -40,5 +43,10 @@ public class ColorTexture implements Texture{
 	public void set(int r, int g, int b, double alfa){
 		alpha = (float) alfa;
 		color = new Color(r,g,b,Math.round(alpha*255));
+	}
+
+	@Override
+	public void tick() {
+		
 	}
 }

@@ -29,6 +29,7 @@ public class Renderer extends Canvas {
 		buffering.show();
 		context.graphics.dispose();
 		context.graphics = (Graphics2D) buffering.getDrawGraphics();
+		context.graphics.clearRect(0, 0, getHeight(), getWidth());
 	}
 	
 	public void init(){

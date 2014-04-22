@@ -23,6 +23,7 @@ public class GameObject extends ParentChildClass{
 	}
 	
 	public void render(GraphicsContext ctx){
+		texture.tick();
 		ctx.save();
 		ctx.graphics.translate(position.x, position.y);
 		texture.renderTexture(ctx);
@@ -31,7 +32,7 @@ public class GameObject extends ParentChildClass{
 
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
+		
 	}
 
 }

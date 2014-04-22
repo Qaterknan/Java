@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class Hlavni implements Runnable{
 		s.lineTo(50, -50);
 		s.closePath();
 		ColorTexture texture = new ColorTexture(255,0,0, 0.8, s);
+		texture.rotation = (float)0.78;
 		GameObject obd = new GameObject(new Vector2(100,100), texture);
 		children.add(obd);
 		
@@ -34,8 +36,9 @@ public class Hlavni implements Runnable{
 			File file = new File("cathedral.png");
 			try {
 				Image img = ImageIO.read(file);
-				ImageTexture texture2 = new ImageTexture(img,new Vector2(150,150), new Vector2(-1,1));
-				children.add(new GameObject(new Vector2(75,75), texture2));
+				ImageTexture texture2 = new ImageTexture(img,new Vector2(150,150), new Vector2(1,1));
+				children.add(new GameObject(new Vector2(75,226), texture2));
+				texture2.toggleDevMode();
 			}
 			catch (IOException ex){
 				System.out.println(ex.getCause());
@@ -45,30 +48,48 @@ public class Hlavni implements Runnable{
 			System.out.println("Wrong URL");
 		}
 		
+		GeneralPath s2 = new GeneralPath();
+		s2.moveTo(45, 37);
+		s2.lineTo(32, -27);
+		s2.lineTo(-36, -40);
+		s2.lineTo(-50, 20);
+		s2.closePath();
+		float[] ratios = new float[3];
+		ratios[0] = (float) 0.0;
+		ratios[1] = (float)0.5;
+		ratios[2] = (float)1.0;
+		Color[] cols = new Color[3];
+		cols[0] = Color.WHITE;
+		cols[1] = Color.BLUE;
+		cols[2] = Color.BLACK;
+		LinearGradientTexture texture3 = new LinearGradientTexture(s2,new Vector2(-30,0), new Vector2(30,0), ratios, cols, "cyclic");
+		children.add(new GameObject(new Vector2(200,200),texture3));
 		
-		
-		
-		/*children.add(new Obdelnik(
-			new Vector2(100,100),
-			new Vector2(50,50),
-			new Color(0,0,0)
-		));
-		children.add(new Obdelnik(
-			new Vector2(200,0),
-			new Vector2(50,50),
-			new Color(0,0,0)
-		));
-		children.add(new Obdelnik(
-			new Vector2(300,100),
-			new Vector2(25,25),
-			new Color(0,0,0),
-			new Color(255,255,255)
-		));*/
+		try {
+			File file = new File("toyota.png");
+			try {
+				Image img = ImageIO.read(file);
+				FilmstripAnimatedTexture texture4 = new FilmstripAnimatedTexture(
+						img,
+						new Vector2(6,1),
+						1000,
+						new Vector2(150,150),
+						new Vector2(1,1)
+					);
+				children.add(new GameObject(new Vector2(300,300), texture4));
+			}
+			catch(IOException ex){
+				
+			}
+		}
+		catch(NullPointerException ex){
+			System.out.println("Wrong URL");
+		}
 		
 		run();
 	}
 		
-	long limit = 50;
+	long limit = 20;
 	long time = new Date().getTime();
 	long now = time;
 	boolean running = true;
