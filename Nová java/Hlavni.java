@@ -1,11 +1,7 @@
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Date;
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
 
 public class Hlavni implements Runnable{
 	
@@ -15,6 +11,8 @@ public class Hlavni implements Runnable{
 	public Hlavni(){
 		
 		Window okno = new Window("Nastavitelné okno",new Vector2(50,50),new Vector2(500,500));
+		
+		Loader loader = new Loader();
 		
 		renderer = new Renderer();
 		okno.add(renderer);
@@ -31,22 +29,25 @@ public class Hlavni implements Runnable{
 		GameObject obd = new GameObject(new Vector2(100,100), texture);
 		children.add(obd);
 		
+		loader.imageNames = new String[2][2];
+		loader.imageNames[0][0] = "cathedral.png";
+		loader.imageNames[0][1] = "cathedral";
+		loader.imageNames[1][0] = "toyota.png";
+		loader.imageNames[1][1] = "toyota";
+		loader.loadImage(0);
+		loader.loadImage(1);
 		
-		try {
-			File file = new File("cathedral.png");
-			try {
-				Image img = ImageIO.read(file);
-				ImageTexture texture2 = new ImageTexture(img,new Vector2(150,150), new Vector2(1,1));
-				children.add(new GameObject(new Vector2(75,226), texture2));
-				texture2.toggleDevMode();
-			}
-			catch (IOException ex){
-				System.out.println(ex.getCause());
-			}
-		}
-		catch (NullPointerException ex){
-			System.out.println("Wrong URL");
-		}
+		loader.soundNames = new String[2][2];
+		loader.soundNames[0][0] = "boj.wav";
+		loader.soundNames[0][1] = "fight";
+		loader.soundNames[1][0] = "valka2.wav";
+		loader.soundNames[1][1] = "war";
+		loader.loadSound(0);
+		loader.loadSound(1);
+		
+		ImageTexture texture2 = new ImageTexture(loader.imageStorage.get("cathedral"),new Vector2(150,150), new Vector2(1,1));
+		children.add(new GameObject(new Vector2(75,226), texture2));
+		texture2.toggleDevMode();
 		
 		GeneralPath s2 = new GeneralPath();
 		s2.moveTo(45, 37);
@@ -65,26 +66,16 @@ public class Hlavni implements Runnable{
 		LinearGradientTexture texture3 = new LinearGradientTexture(s2,new Vector2(-30,0), new Vector2(30,0), ratios, cols, "cyclic");
 		children.add(new GameObject(new Vector2(200,200),texture3));
 		
-		try {
-			File file = new File("toyota.png");
-			try {
-				Image img = ImageIO.read(file);
-				FilmstripAnimatedTexture texture4 = new FilmstripAnimatedTexture(
-						img,
-						new Vector2(6,1),
-						1000,
-						new Vector2(150,150),
-						new Vector2(1,1)
-					);
-				children.add(new GameObject(new Vector2(300,300), texture4));
-			}
-			catch(IOException ex){
-				
-			}
-		}
-		catch(NullPointerException ex){
-			System.out.println("Wrong URL");
-		}
+		FilmstripAnimatedTexture texture4 = new FilmstripAnimatedTexture(
+				loader.imageStorage.get("toyota"),
+				new Vector2(6,1),
+				1000,
+				new Vector2(150,150),
+				new Vector2(1,1)
+			);
+		children.add(new GameObject(new Vector2(300,300), texture4));
+		
+		loader.soundStorage.get("war").start();
 		
 		run();
 	}
