@@ -17,21 +17,6 @@ public abstract class GraphicsObject {
 	String textureType = "none";
 	String renderType = "fill";
 	
-	public ArrayList<GraphicsObject> children = new ArrayList<GraphicsObject>();
-	
-	public void tickChildren(){
-		for(GraphicsObject child : children){
-			child.tick();
-			child.tickChildren();
-		}
-	}
-	
-	public void renderChildren(Renderer rendr){
-		for(GraphicsObject child : children){
-			rendr.render(child);
-			child.renderChildren(rendr);
-		}
-	}
 	
 	public GraphicsObject (Vector2 zposition, Vector2 zdimension, Color zcolor){
 		position = zposition;

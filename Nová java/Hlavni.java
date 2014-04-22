@@ -1,5 +1,5 @@
-import java.awt.Color;
 import java.awt.Image;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.imageio.ImageIO;
@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Hlavni implements Runnable{
 	
-	public ArrayList<GraphicsObject> children = new ArrayList<GraphicsObject>();
+	public ArrayList<GameObject> children = new ArrayList<GameObject>();
 	Renderer renderer;
 	
 	public Hlavni(){
@@ -18,15 +18,24 @@ public class Hlavni implements Runnable{
 		renderer = new Renderer();
 		okno.add(renderer);
 		renderer.init();
+		
+		GeneralPath s = new GeneralPath();
+		s.moveTo(-50,-50);
+		s.lineTo(-50,50);
+		s.lineTo(50, 50);
+		s.lineTo(50, -50);
+		s.closePath();
+		ColorTexture texture = new ColorTexture(255,0,0, 0.8, s);
+		GameObject obd = new GameObject(new Vector2(100,100), texture);
+		children.add(obd);
+		
+		
 		try {
 			File file = new File("cathedral.png");
 			try {
 				Image img = ImageIO.read(file);
-				children.add(new Obdelnik(
-						new Vector2(270,220),
-						new Vector2(128,128),
-						img
-				));
+				ImageTexture texture2 = new ImageTexture(img,new Vector2(150,150), new Vector2(-1,1));
+				children.add(new GameObject(new Vector2(75,75), texture2));
 			}
 			catch (IOException ex){
 				System.out.println(ex.getCause());
@@ -36,7 +45,10 @@ public class Hlavni implements Runnable{
 			System.out.println("Wrong URL");
 		}
 		
-		children.add(new Obdelnik(
+		
+		
+		
+		/*children.add(new Obdelnik(
 			new Vector2(100,100),
 			new Vector2(50,50),
 			new Color(0,0,0)
@@ -51,7 +63,7 @@ public class Hlavni implements Runnable{
 			new Vector2(25,25),
 			new Color(0,0,0),
 			new Color(255,255,255)
-		));
+		));*/
 		
 		run();
 	}
@@ -66,7 +78,9 @@ public class Hlavni implements Runnable{
 			now = new Date().getTime();
 			if(now - time > limit){
 				time = now;
-				for(GraphicsObject child : children){
+				for(GameObject child : children){
+					child.tick();
+					child.tickChildren();
 					renderer.render(child);
 				}
 				renderer.switchContext(); // Zajiöùuje bufferov·nÌ

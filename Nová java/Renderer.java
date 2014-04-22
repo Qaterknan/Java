@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 public class Renderer extends Canvas {
 	
 	private static final long serialVersionUID = 1L; // Eclipse to chce, protože pøepisuji Canvas
-	public Graphics2D context;
+	public GraphicsContext context;
 	public BufferStrategy buffering;
 	public AffineTransform transformMatrix;
 	
@@ -18,31 +18,22 @@ public class Renderer extends Canvas {
 		setVisible(true);
 	}
 	
-	public void render(GraphicsObject object){
-		save();
-		context.translate(object.position.x,object.position.y);
+	public void render(GameObject object){
+		context.save();
 		object.render(context);
 		object.renderChildren(this);
-		restore();
+		context.restore();
 	}
 	
 	public void switchContext(){
 		buffering.show();
-		context.dispose();
-		context = (Graphics2D) buffering.getDrawGraphics();
+		context.graphics.dispose();
+		context.graphics = (Graphics2D) buffering.getDrawGraphics();
 	}
 	
 	public void init(){
 		createBufferStrategy(2); // TODO: Graphics capabilities
 		buffering = getBufferStrategy();
-		context = (Graphics2D) buffering.getDrawGraphics();
-	}
-	
-	public void save(){
-		transformMatrix = context.getTransform();
-	}
-	
-	public void restore(){
-		context.setTransform(transformMatrix);
+		context = new GraphicsContext((Graphics2D) buffering.getDrawGraphics());
 	}
 }
